@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DS Sachverständigenbüro - Auftrag zur Gutachtenerstellung</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ds-blue': '#1e40af',
+                        'ds-gray': '#374151',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="app.js" defer></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="bg-white shadow-lg rounded-lg mb-8 p-6">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <div class="text-sm text-gray-600 mb-1">Ihr</div>
+                    <div class="text-lg font-semibold text-ds-blue">Gutachter</div>
+                    <div class="text-xl font-bold text-ds-gray">DS SACHVERSTÄNDIGENBÜRO</div>
+                </div>
+                <div class="w-32 h-32 flex items-center justify-center">
+                    <img src="/Logo DS Sachverständigenbüro Schwarz Trans.png" alt="DS Sachverständigenbüro Logo" class="max-w-full max-h-full">
+                </div>
+            </div>
+            
+            <div class="border-t pt-4">
+                <div class="text-center md:text-left">
+                    <div class="font-semibold text-ds-gray mb-2">DS Sachverständigenbüro - Mühlenstr.49 - 33609 Bielefeld</div>
+                    <div class="text-sm text-gray-600">Tel.: 0151-11738834 mail :: info@unfallschaden-bielefeld.de</div>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-bold text-center mt-6 text-ds-gray">Auftrag zur Gutachtenerstellung</h1>
+            </div>
+        </div>
+
+        <!-- Main Form -->
+        <form id="gutachten-form" method="POST" action="/api/submit-gutachten" class="space-y-8">
+            <!-- Gutachten Nr. & Abtretung -->
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="gutachten-nr" class="block text-sm font-medium text-gray-700 mb-2">Gutachten Nr.:</label>
+                        <input type="text" id="gutachten-nr" name="gutachtenNr" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue"
+                               readonly>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="abtretung" name="abtretung" 
+                               class="h-4 w-4 text-ds-blue focus:ring-ds-blue border-gray-300 rounded">
+                        <label for="abtretung" class="ml-2 block text-sm text-gray-900">Abtretung</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legal Text -->
+            <div class="bg-blue-50 border-l-4 border-ds-blue p-4 rounded">
+                <p class="text-sm text-gray-700">
+                    sollten zur Feststellung des Schadens eine Teilmontage des Fahrzeugs erforderlich sein, ermächtige ich DS Sachverständigenbüro, den Auftrag hierfür für mich zu erteilen. Das Gutachterhonorar wird nach dem Gegenstandswert gemäß der gegenwärtig geltenden Honorartabelle für das Schadengutachten berechnet.
+                </p>
+            </div>
+
+            <!-- Auftraggeber Section -->
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-ds-gray mb-6 border-b pb-2">Auftraggeber (Geschädigter)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name *</label>
+                        <input type="text" id="name" name="auftraggeber.name" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="strasse" class="block text-sm font-medium text-gray-700 mb-2">Straße/PLZ/Ort *</label>
+                        <input type="text" id="strasse" name="auftraggeber.adresse" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                    <div>
+                        <label for="email-telefon" class="block text-sm font-medium text-gray-700 mb-2">email/Telefon *</label>
+                        <input type="text" id="email-telefon" name="auftraggeber.kontakt" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                    <div>
+                        <label for="kennzeichen" class="block text-sm font-medium text-gray-700 mb-2">Amtl.Kennzeichen *</label>
+                        <input type="text" id="kennzeichen" name="auftraggeber.kennzeichen" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                </div>
+                
+                <!-- Vorsteuerabzug & Gutachten per -->
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Vorsteuerabzug</label>
+                        <div class="flex space-x-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="auftraggeber.vorsteuerabzug" value="ja" 
+                                       class="h-4 w-4 text-ds-blue focus:ring-ds-blue border-gray-300">
+                                <span class="ml-2 text-sm text-gray-900">ja</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="auftraggeber.vorsteuerabzug" value="nein" 
+                                       class="h-4 w-4 text-ds-blue focus:ring-ds-blue border-gray-300">
+                                <span class="ml-2 text-sm text-gray-900">nein</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Gutachten per</label>
+                        <div class="flex space-x-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="auftraggeber.gutachtenPer" value="email" 
+                                       class="h-4 w-4 text-ds-blue focus:ring-ds-blue border-gray-300">
+                                <span class="ml-2 text-sm text-gray-900">email</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="auftraggeber.gutachtenPer" value="Post" 
+                                       class="h-4 w-4 text-ds-blue focus:ring-ds-blue border-gray-300">
+                                <span class="ml-2 text-sm text-gray-900">Post</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sonstiges Section -->
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-ds-gray mb-6 border-b pb-2">sonstiges (Geschädigter)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label for="kilometerstand" class="block text-sm font-medium text-gray-700 mb-2">Kilometerstand</label>
+                        <input type="text" id="kilometerstand" name="sonstiges.kilometerstand"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                    <div>
+                        <label for="reifen" class="block text-sm font-medium text-gray-700 mb-2">Reifen / Profiltiefe</label>
+                        <input type="text" id="reifen" name="sonstiges.reifen"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                    <div>
+                        <label for="fahrzeugstell" class="block text-sm font-medium text-gray-700 mb-2">Fahrzeugstellnummer</label>
+                        <input type="text" id="fahrzeugstell" name="sonstiges.fahrzeugstellnummer"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unfallereignis Section -->
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-ds-gray mb-6 border-b pb-2">Angaben zum Unfallereignis</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div>
+                        <label for="unfalltag" class="block text-sm font-medium text-gray-700 mb-2">Unfalltag</label>
+                        <input type="date" id="unfalltag" name="unfall.tag"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                    <div>
+                        <label for="uhrzeit" class="block text-sm font-medium text-gray-700 mb-2">Uhrzeit</label>
+                        <input type="time" id="uhrzeit" name="unfall.uhrzeit"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                    <div>
+                        <label for="unfallort" class="block text-sm font-medium text-gray-700 mb-2">Unfallort</label>
+                        <input type="text" id="unfallort" name="unfall.ort"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                </div>
+                <div>
+                    <label for="schadenbeschreibung" class="block text-sm font-medium text-gray-700 mb-2">Schadenbeschreibung</label>
+                    <textarea id="schadenbeschreibung" name="unfall.beschreibung" rows="4"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue"></textarea>
+                </div>
+            </div>
+
+            <!-- Gegner Section -->
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-ds-gray mb-6 border-b pb-2">Halter Gegnerisches KFZ (Verursacher)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label for="gegner-name" class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                        <input type="text" id="gegner-name" name="gegner.name"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                    <div>
+                        <label for="gegner-adresse" class="block text-sm font-medium text-gray-700 mb-2">Straße/PLZ/Ort</label>
+                        <input type="text" id="gegner-adresse" name="gegner.adresse"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                    <div>
+                        <label for="gegner-kennzeichen" class="block text-sm font-medium text-gray-700 mb-2">Amtl. Kennzeichen</label>
+                        <input type="text" id="gegner-kennzeichen" name="gegner.kennzeichen"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Versicherung Section -->
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-ds-gray mb-6 border-b pb-2">Versicherungsgesellschaft des Verursachers</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="versicherung-name" class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                        <input type="text" id="versicherung-name" name="versicherung.name"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                    <div>
+                        <label for="schadennummer" class="block text-sm font-medium text-gray-700 mb-2">Schadennummer</label>
+                        <input type="text" id="schadennummer" name="versicherung.schadennummer"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dienstleister Section -->
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-ds-gray mb-6 border-b pb-2">sonstige Dienstleister</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="dienstleister-name" class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                        <input type="text" id="dienstleister-name" name="dienstleister.name"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                    <div>
+                        <label for="dienstleister-kontakt" class="block text-sm font-medium text-gray-700 mb-2">Kontakt</label>
+                        <input type="text" id="dienstleister-kontakt" name="dienstleister.kontakt"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notizen Section -->
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-ds-gray mb-6 border-b pb-2">Notizen</h3>
+                <textarea id="notizen" name="notizen" rows="4" placeholder="Zusätzliche Anmerkungen..."
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue"></textarea>
+            </div>
+
+            <!-- Unterschrift Section -->
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-ds-gray mb-6 border-b pb-2">Ort / Unterschrift</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="ort" class="block text-sm font-medium text-gray-700 mb-2">Ort</label>
+                        <input type="text" id="ort" name="ort"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ds-blue focus:border-ds-blue">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Unterschrift *</label>
+                        <div class="border-2 border-gray-300 rounded-md p-3 bg-gray-50">
+                            <canvas id="signatureCanvas" width="400" height="150" 
+                                    class="border border-gray-400 rounded bg-white cursor-crosshair" 
+                                    style="touch-action: none; display: block; width: 100%; max-width: 400px;"></canvas>
+                            <button type="button" id="clearSignature" 
+                                    class="mt-2 text-sm text-red-600 hover:text-red-800 focus:outline-none">
+                                Löschen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button type="submit" id="submit-btn"
+                            class="bg-ds-blue hover:bg-blue-800 text-white font-bold py-3 px-8 rounded-lg shadow-lg transform transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Gutachten beauftragen
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Status Messages -->
+        <div id="status-message" class="hidden mt-6 p-4 rounded-md"></div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
